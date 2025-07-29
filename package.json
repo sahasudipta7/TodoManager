@@ -1,0 +1,28 @@
+{
+  "name": "todomanager",
+  "version": "1.0.0",
+  "description": "for keeping track of tasks",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahasudipta7/TodoManager.git"
+  },
+  "keywords": [
+    "todos",
+    "subtodos",
+    "backend"
+  ],
+  "author": "Sudipta Saha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sahasudipta7/TodoManager/issues"
+  },
+  "homepage": "https://github.com/sahasudipta7/TodoManager#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
