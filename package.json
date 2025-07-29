@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/sahasudipta7/TodoManager#readme",
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
   }
 }
