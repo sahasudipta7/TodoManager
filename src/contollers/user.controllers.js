@@ -15,11 +15,11 @@ const registerUser= asyncHandler(async (req,res)=>{
     if([username,password,name].some((field)=>field?.trim()==="")){
         throw new ApiError(400,"All fields are mandatory");
     }
-    const existingUser=User.findOne({
-        $or:[{username},{email}]
+    const existingUser= await User.findOne({
+        $or:[{username}]
     })
     if(existingUser){
-        throw new ApiError(409,"Given username or email already exists")
+        throw new ApiError(409,"Given username already exists")
     }
 
     const user=await User.create({
