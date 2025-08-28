@@ -113,6 +113,9 @@ const logoutUser=asyncHandler(async(req,res)=>{
 
 const refreshAccessToken = asyncHandler(async(req,res)=>{
     const incomingRefreshToken=req.cookies.refreshToken||req.body.refreshToken
+    if(!incomingRefreshToken){
+        throw new ApiError(401,"Unauthorized Request");
+    }
     const decodedToken=jwt.verify(incomingRefreshToken,process.env.REFRESH_TOKEN_SECRET)
     if(!decodedToken){
         throw new ApiError(401,"Unauthorized Request")
@@ -138,4 +141,27 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
     },"Access Token Refreshed")
 
 })
-export {registerUser,loginUser,logoutUser,refreshAccessToken}
+
+const changeCurrentPassword = asyncHandler(async(req,res)=>{
+    //take old and new password ip from user
+    //use auth middleware to find user(user can only change password if logged in)
+    //check whether old password is correct
+    //save new password
+    const {oldPassword,newPassword} = req.body
+    const user=await User.findById(req.user?._id)
+    const isPasswordCorrect=await user.isPasswordCorrect(oldPassword)
+    if(!isPasswordCorrect){
+        throw new ApiError(400,"Incorrect Old Password")
+    }
+    user.password=newPassword
+    user.save({validateBeforeSave:false})
+    res.status(200).json(200,{},"Password changed successfully")
+})
+
+const getCurrentUser = asyncHandler(async(req,res)=>{
+    res.status(200).json(200,req.user,"Fetched current user successfully")
+})
+
+//#
+
+export {registerUser,loginUser,logoutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser}
