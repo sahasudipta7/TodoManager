@@ -149,19 +149,22 @@ const changeCurrentPassword = asyncHandler(async(req,res)=>{
     //save new password
     const {oldPassword,newPassword} = req.body
     const user=await User.findById(req.user?._id)
-    const isPasswordCorrect=await user.isPasswordCorrect(oldPassword)
+    console.log("User from middleware:", req.user);
+    const isPasswordCorrect=await user?.isPasswordCorrect(oldPassword)
     if(!isPasswordCorrect){
         throw new ApiError(400,"Incorrect Old Password")
     }
     user.password=newPassword
-    user.save({validateBeforeSave:false})
-    res.status(200).json(200,{},"Password changed successfully")
+    await user.save({validateBeforeSave:false})
+    res.status(200).json(new ApiResponse(200,{},"Password changed successfully"))
 })
 
 const getCurrentUser = asyncHandler(async(req,res)=>{
-    res.status(200).json(200,req.user,"Fetched current user successfully")
+    res.status(200).json(new ApiResponse(200,req.user,"Fetched current user successfully"))
 })
 
 //#
+
+// const getUserTodo = asyncHandler(async(req,res)=>)
 
 export {registerUser,loginUser,logoutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser}
