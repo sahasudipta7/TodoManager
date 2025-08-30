@@ -1,6 +1,7 @@
 import { asyncHandler } from "../utils/asynchandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
+import { Todo } from "../models/todo.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 
@@ -149,7 +150,7 @@ const changeCurrentPassword = asyncHandler(async(req,res)=>{
     //save new password
     const {oldPassword,newPassword} = req.body
     const user=await User.findById(req.user?._id)
-    console.log("User from middleware:", req.user);
+    //console.log("User from middleware:", req.user);
     const isPasswordCorrect=await user?.isPasswordCorrect(oldPassword)
     if(!isPasswordCorrect){
         throw new ApiError(400,"Incorrect Old Password")
@@ -165,6 +166,26 @@ const getCurrentUser = asyncHandler(async(req,res)=>{
 
 //#
 
-// const getUserTodo = asyncHandler(async(req,res)=>)
+const getAllUserTodos = asyncHandler(async(req,res)=>{
+    const user=await User.findById(req.user?._id)
+    if(!user){
+        throw new ApiError(400,"Unauthorized Request")
+    }
+    try {
+        const allTodos =await Todo.aggregate([
+            {
+                $match:{
+                    author:user?._id
+                }
+            },
+        ])
+        return res.status(200).json(new ApiResponse(200,{allTodos},"Fetched Todos Successfully"))
+    } catch (error) {
+        throw new ApiError(500,"An error occurred while fetching todos.")
+        
+    }
+})
 
-export {registerUser,loginUser,logoutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser}
+
+
+export {registerUser,loginUser,logoutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser,getAllUserTodos}
