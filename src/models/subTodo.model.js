@@ -3,7 +3,8 @@ import mongoose,{Schema} from "mongoose";
 const subTodoSchema=new Schema({
     content:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     complete:{
         type:Boolean,

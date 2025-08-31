@@ -35,4 +35,34 @@ const createSubTodo = asyncHandler(async(req,res)=>{
     }    
 })
 
-export { createSubTodo }
+const markSubTodoComplete = asyncHandler(async(req,res)=>{
+    try {
+        const {title,content} = req.body
+        const user=await User.findById(req.user?._id)
+        if(!user){
+            throw new ApiError(400,"Unauthorized Request")
+        }
+        const reqdTodo = await Todo.findOne({ author: user._id, title });
+        if(!reqdTodo) {
+            throw new ApiError(404, "Requested Todo doesn't exist");
+        }
+        let foundSubTodo = undefined
+        for (const subTodoId of reqdTodo.subTodos){
+            let subTodo=await SubTodo.findById(subTodoId)
+            if(subTodo?.content===content){
+                subTodo.complete=true
+                await subTodo.save()
+                foundSubTodo = subTodo;
+                break; 
+            }
+        }
+        if (!foundSubTodo) {
+            throw new ApiError(404, "No such subTodo exists");
+        }
+        return res.status(200).json(new ApiResponse(200,{},"Marked subTodo complete successfully"))
+    } catch (error) {
+        throw new ApiError(500,error.message || "There was an error performing mark complete operation")
+    }
+})
+
+export { createSubTodo,markSubTodoComplete }
