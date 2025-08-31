@@ -12,7 +12,7 @@ const todoSchema=new Schema({
     complete:{
         type:Boolean,
         required:true,
-        default:false
+        default:true
     },
     author:{
         type:Schema.Types.ObjectId,

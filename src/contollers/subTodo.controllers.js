@@ -1,0 +1,38 @@
+import { asyncHandler } from "../utils/asynchandler.js";
+import { ApiError } from "../utils/ApiError.js";
+import { User } from "../models/user.model.js";
+import { Todo } from "../models/todo.model.js";
+import { SubTodo } from "../models/subTodo.model.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import jwt from "jsonwebtoken";
+
+const createSubTodo = asyncHandler(async(req,res)=>{
+    try {
+        const {title,content} = req.body
+        const user=await User.findById(req.user?._id)
+        if(!user){
+            throw new ApiError(400,"Unauthorized Request")
+        }
+        const reqdTodo = await Todo.findOne({ author: user._id, title });
+        if (!reqdTodo) {
+            throw new ApiError(404, "Requested Todo doesn't exist");
+        }
+        const subTodo=await SubTodo.create({
+            content
+        })
+    
+        const createdSubTodo = await SubTodo.findById(subTodo._id)
+        if(!createdSubTodo){
+            throw new ApiError(500,"Failed to create subTodo")
+        }
+    
+        reqdTodo.subTodos.push(createdSubTodo._id)
+        reqdTodo.complete = false
+        await reqdTodo.save();
+        return res.status(200).json(new ApiResponse(200,{createdSubTodo},"created Sub-todo successfully"))
+    } catch (error) {
+        throw new ApiError(500,error.message || "An error occured while creating the Sub-todo")
+    }    
+})
+
+export { createSubTodo }

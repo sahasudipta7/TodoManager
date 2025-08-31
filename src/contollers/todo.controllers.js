@@ -39,6 +39,29 @@ const createTodo = asyncHandler(async(req,res)=>{
     },"Created Todo List successfully"))
 })
 
+const getTodo = asyncHandler(async(req,res)=>{
+  const {title} = req.body
+  const user=await User.findById(req.user?._id);
+  if(!user){
+      throw new ApiError(400,"Unauthorized Request")
+  }
+  try {
+    const reqdTodo = await Todo.aggregate([
+      {
+        $match:{
+            author:user._id,
+            title:title
+        }
+      }
+    ])
+    if(reqdTodo.length==0){
+      throw new ApiError(404,"Requested Todo doesn't exist")
+    }
+    return res.status(200).json(new ApiResponse(200,{reqdTodo},"Fetched Requested Todo Successfully"))
+  } catch (error) {
+      throw new ApiError(500,"There was an issue fetching requested Todo.")
+  }
 
+})
 
-export { createTodo }
+export { createTodo,getTodo }
