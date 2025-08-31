@@ -35,7 +35,7 @@ const createSubTodo = asyncHandler(async(req,res)=>{
     }    
 })
 
-const markSubTodoComplete = asyncHandler(async(req,res)=>{
+const toggleSubTodoComplete = asyncHandler(async(req,res)=>{
     try {
         const {title,content} = req.body
         const user=await User.findById(req.user?._id)
@@ -50,7 +50,7 @@ const markSubTodoComplete = asyncHandler(async(req,res)=>{
         for (const subTodoId of reqdTodo.subTodos){
             let subTodo=await SubTodo.findById(subTodoId)
             if(subTodo?.content===content){
-                subTodo.complete=true
+                subTodo.complete = !subTodo.complete
                 await subTodo.save()
                 foundSubTodo = subTodo;
                 break; 
@@ -59,10 +59,10 @@ const markSubTodoComplete = asyncHandler(async(req,res)=>{
         if (!foundSubTodo) {
             throw new ApiError(404, "No such subTodo exists");
         }
-        return res.status(200).json(new ApiResponse(200,{},"Marked subTodo complete successfully"))
+        return res.status(200).json(new ApiResponse(200,{},"Toggled subTodo complete successfully"))
     } catch (error) {
-        throw new ApiError(500,error.message || "There was an error performing mark complete operation")
+        throw new ApiError(500,error.message || "There was an error performing toggle complete operation")
     }
 })
 
-export { createSubTodo,markSubTodoComplete }
+export { createSubTodo,toggleSubTodoComplete }
