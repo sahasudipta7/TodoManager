@@ -64,4 +64,26 @@ const getTodo = asyncHandler(async(req,res)=>{
 
 })
 
-export { createTodo,getTodo }
+const toggleTodoComplete = asyncHandler(async(req,res)=>{
+  try {
+    const {title} = req.body
+    const user=await User.findById(req.user?._id)
+    if(!user){
+      throw new ApiError(400,"Unauthorized Request")
+    }
+    const reqdTodo = await Todo.findOne({
+      author:user?._id,
+      title
+    })
+    if(!reqdTodo){
+      throw new ApiError(404,"Requested Todo doesn't exist")
+    }
+    reqdTodo.complete=!reqdTodo.complete
+    await reqdTodo.save()
+    return res.status(200).json(new ApiResponse(200,{},"Toggled Todo Complete successfully"))
+  } catch (error) {
+    throw new ApiError(500,error.message||"Failed to toggle Todo complete")
+  }
+})
+
+export { createTodo,getTodo,toggleTodoComplete }
