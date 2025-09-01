@@ -65,4 +65,39 @@ const toggleSubTodoComplete = asyncHandler(async(req,res)=>{
     }
 })
 
-export { createSubTodo,toggleSubTodoComplete }
+const deleteSubTodo = asyncHandler(async(req,res)=>{
+    try {
+        const {title,content} = req.body
+        const user = await User.findById(req.user?._id)
+        if(!user){
+            throw new ApiError(400,"Unauthorized Request")
+        }
+        const reqdTodo = await Todo.findOne({
+            author:user._id,
+            title
+        })
+        if(!reqdTodo){
+            throw new ApiError(404,"Requested Todo doesn't exist")
+        }
+        let foundSubTodo = undefined
+        for (const subTodoId of reqdTodo.subTodos){
+            let subTodo=await SubTodo.findById(subTodoId)
+            if(subTodo?.content===content){
+                foundSubTodo = subTodo;
+                const index = reqdTodo.subTodos.indexOf(subTodoId);
+                reqdTodo.subTodos.splice(index,1)
+                await SubTodo.findByIdAndDelete(subTodo._id)
+                await reqdTodo.save()
+                break; 
+            }
+        }
+        if (!foundSubTodo) {
+            throw new ApiError(404, "No such subTodo exists");
+        }
+        return res.status(200).json(new ApiResponse(200,{},"Deleted subtodo successfully"))
+    } catch (error) {
+        throw new ApiError(500,error.message||"Failed to delete subTodo")
+    }
+})
+
+export { createSubTodo,toggleSubTodoComplete,deleteSubTodo }
