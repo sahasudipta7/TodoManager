@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asynchandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { Todo } from "../models/todo.model.js";
+import { SubTodo } from "../models/subTodo.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 
@@ -86,6 +87,28 @@ const toggleTodoComplete = asyncHandler(async(req,res)=>{
   }
 })
 
+const deleteTodo = asyncHandler(async(req,res)=>{
+  try {
+    const {title} = req.body
+    const user = await User.findById(req.user._id)
+    if(!user){
+      throw new ApiError(400,"Unauthorized Request")
+    }
+    const reqdTodo = await Todo.findOne({
+      author:user._id,
+      title
+    })
+    if(!reqdTodo){
+      throw new ApiError(404,"Requested Todo does not exist")
+    }
+    for(const subTodoId of reqdTodo.subTodos){
+      await SubTodo.findByIdAndDelete(subTodoId)
+    }
+    await Todo.findByIdAndDelete(reqdTodo._id)
+    return res.status(200).json(new ApiResponse(200,{},"Deleted Todo Successfully"))
+  } catch (error) {
+    throw new ApiError(500,error.message||"Failed to delete Todo")
+  }
+})
 
-
-export { createTodo,getTodo,toggleTodoComplete }
+export { createTodo,getTodo,toggleTodoComplete,deleteTodo }
