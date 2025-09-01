@@ -65,6 +65,37 @@ const toggleSubTodoComplete = asyncHandler(async(req,res)=>{
     }
 })
 
+const getSubTodo = asyncHandler(async(req,res)=>{
+    try {
+        const {title,content} = req.body
+        const user = await User.findById(req.user?._id)
+        if(!user){
+            throw new ApiError(400,"Unauthorized Request")
+        }
+        const reqdTodo = await Todo.findOne({
+            author:user._id,
+            title
+        })
+        if(!reqdTodo){
+            throw new ApiError(404,"Requested Todo doesn't exist")
+        }
+        let foundSubTodo = undefined
+        for (const subTodoId of reqdTodo.subTodos){
+            let subTodo=await SubTodo.findById(subTodoId)
+            if(subTodo?.content===content){
+                foundSubTodo = subTodo;
+                break; 
+            }
+        }
+        if (!foundSubTodo) {
+            throw new ApiError(404, "No such subTodo exists");
+        }
+        return res.status(200).json(new ApiResponse(200,{foundSubTodo},"Found requested subtodo successfully"))
+    }
+    catch (error) {
+        throw new ApiError(500,error.message||"Failed to fetch Sub-Todo")
+    }
+})
 const deleteSubTodo = asyncHandler(async(req,res)=>{
     try {
         const {title,content} = req.body
@@ -100,4 +131,4 @@ const deleteSubTodo = asyncHandler(async(req,res)=>{
     }
 })
 
-export { createSubTodo,toggleSubTodoComplete,deleteSubTodo }
+export { createSubTodo,toggleSubTodoComplete,getSubTodo,deleteSubTodo }
