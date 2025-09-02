@@ -1,11 +1,10 @@
 import { app } from "../src/app.js";
-import serverless from "serverless-http";
 import connectDB from "../src/db/index.js";
 
 // Connect once before handling requests
 connectDB();
-export default serverless(app);//new change for vercel
-//export default app;// new changes for vercel 
+
+export default app;// new changes for vercel 
 
 
 
