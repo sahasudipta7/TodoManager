@@ -3,7 +3,7 @@ import { registerUser,loginUser,logoutUser,refreshAccessToken,changeCurrentPassw
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router=Router();
-
+console.log("gonna allow access to user functions")//test
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 
