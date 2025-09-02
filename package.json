@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "for keeping track of tasks",
   "main": "index.js",
-  "type": "module", 
+  "type": "module",
   "scripts": {
     "dev": "node api/index.js",
     "start": "node api/index.js"
@@ -35,6 +35,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.5",
-    "mongoose-aggregate-paginate-v2": "^1.1.4"
+    "mongoose-aggregate-paginate-v2": "^1.1.4",
+    "serverless-http": "^4.0.0"
   }
 }
