@@ -7,8 +7,6 @@ import connectDB from "../src/db/index.js";
 dotenv.config({
 
 })
-console.log("Gonna connect the db");//test
-
 connectDB().
 then(()=>{
     app.on("error",(error)=>{

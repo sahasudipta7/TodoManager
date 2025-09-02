@@ -25,9 +25,8 @@ import subTodoRouter from "./routes/subTodo.routes.js"
 app.use("/api/v1/users",userRouter);
 app.use("/api/v1/todos",todoRouter);
 app.use("/api/v1/subTodos",subTodoRouter);
-console.log("gonna get homepage")//test
+
 app.get("/", (req, res) => {
-    console.log("inside /")//t
   res.json({
     message: "Welcome to the TodoManager API ",
     docs: "/api/v1"
