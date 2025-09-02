@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "for keeping track of tasks",
   "main": "index.js",
-  "type": "module",
+  "type": "module", 
   "scripts": {
-    "start": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
