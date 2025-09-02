@@ -164,6 +164,27 @@ const getCurrentUser = asyncHandler(async(req,res)=>{
     res.status(200).json(new ApiResponse(200,req.user,"Fetched current user successfully"))
 })
 
+const updateUsername = asyncHandler(async(req,res)=>{
+    try {
+        const {newUsername} = req.body
+        const user = await User.findById(req.user._id)
+        if(!user){
+            throw new ApiError(400,"Unauthorized Request")
+        }
+        const existingUser = await User.findOne({
+            username:newUsername
+        })
+        if(existingUser){
+            throw new ApiError(404,"An user with given username already exists")
+        }
+        user.username=newUsername
+        await user.save()
+        return res.status(200).json(new ApiResponse(200,{},"Changed username successfully"))
+    } catch (error) {
+        throw new ApiError(500,error.message||"Failed to change username")
+    } 
+})
+
 //#
 
 const getAllUserTodos = asyncHandler(async(req,res)=>{
@@ -187,4 +208,4 @@ const getAllUserTodos = asyncHandler(async(req,res)=>{
 
 
 
-export {registerUser,loginUser,logoutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser,getAllUserTodos}
+export {registerUser,loginUser,logoutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser,updateUsername,getAllUserTodos}
