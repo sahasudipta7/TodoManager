@@ -28,7 +28,7 @@ app.use("/api/v1/subTodos",subTodoRouter);
 
 app.get("/", (req, res) => {
   res.json({
-    message: "Welcome to the TodoManager API ",
+    message: "Welcome to the TodoManager API 🚀",
     docs: "/api/v1"
   });
 });
