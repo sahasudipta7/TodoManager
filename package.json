@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module", 
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "nodemon src/index.js"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sahasudipta7/TodoManager.git"
