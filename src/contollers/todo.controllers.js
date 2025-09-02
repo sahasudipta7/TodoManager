@@ -87,6 +87,29 @@ const toggleTodoComplete = asyncHandler(async(req,res)=>{
   }
 })
 
+const renameTodo = asyncHandler(async(req,res)=>{
+  try {
+    const {oldTitle,newTitle} = req.body
+    const user = await User.findById(req.user?._id)
+    if(!user){
+      throw new ApiError(400,"Unauthorized Request")
+    }
+    const reqdTodo = await Todo.findOne({
+      author:user._id,
+      title:oldTitle
+    })
+    if(!reqdTodo){
+      throw new ApiError(404,"Requested Todo does not exist.")
+    }
+    reqdTodo.title=newTitle
+    await reqdTodo.save()
+    return res.status(200).json(new ApiResponse(200,{},"Renamed Todo successfully."))
+  } catch (error) {
+    throw new ApiError(500,error.message||"Failed to rename Todo")
+  }
+
+})
+
 const deleteTodo = asyncHandler(async(req,res)=>{
   try {
     const {title} = req.body
@@ -111,4 +134,4 @@ const deleteTodo = asyncHandler(async(req,res)=>{
   }
 })
 
-export { createTodo,getTodo,toggleTodoComplete,deleteTodo }
+export { createTodo,getTodo,toggleTodoComplete,renameTodo,deleteTodo }
