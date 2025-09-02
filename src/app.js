@@ -26,8 +26,4 @@ app.use("/api/v1/users",userRouter);
 app.use("/api/v1/todos",todoRouter);
 app.use("/api/v1/subTodos",subTodoRouter);
 
-
-app.get("/", (req, res) => {
-  res.send("✅ TodoManager API is running!");
-});//new
 export {app};
