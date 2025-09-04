@@ -22,8 +22,16 @@ app.use(cookieParser());
 import userRouter from "./routes/user.routes.js";
 import todoRouter from "./routes/todo.routes.js";
 import subTodoRouter from "./routes/subTodo.routes.js"
+import { registerUser } from "./contollers/user.controllers.js";
 app.use("/api/v1/users",userRouter);
 app.use("/api/v1/todos",todoRouter);
 app.use("/api/v1/subTodos",subTodoRouter);
+//nc
+app.get("/",(req,res)=>{
+    res.send("welcome to home page...")
+})
+
+
+
 
 export {app};
