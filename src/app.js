@@ -44,23 +44,23 @@ app.get("/", (req, res) => {
       <li>POST /api/v1/users/getAllUserTodos - Get all todos for a user ( requires JWT)</li>
     </ul>
 
-    <h2>📝 Todo Routes</h2>
+    <h2> Todo Routes</h2>
     <ul>
-        <li>POST /api/v1/todos/createTodo - Create a new todo (🔒 requires JWT)</li>
-        <li>POST /api/v1/todos/getTodo - Get all todos for a user (🔒 requires JWT)</li>
-        <li>POST /api/v1/todos/toggleTodoComplete - Mark todo as complete/incomplete (🔒 requires JWT)</li>
-        <li>POST /api/v1/todos/renameTodo - Rename a todo (🔒 requires JWT)</li>
-        <li>POST /api/v1/todos/deleteTodo - Delete a todo (🔒 requires JWT)</li>
+        <li>POST /api/v1/todos/createTodo - Create a new todo ( requires JWT)</li>
+        <li>POST /api/v1/todos/getTodo - Get all todos for a user ( requires JWT)</li>
+        <li>POST /api/v1/todos/toggleTodoComplete - Mark todo as complete/incomplete ( requires JWT)</li>
+        <li>POST /api/v1/todos/renameTodo - Rename a todo ( requires JWT)</li>
+        <li>POST /api/v1/todos/deleteTodo - Delete a todo ( requires JWT)</li>
     </ul>
 
 
-    <h2>✅ SubTodo Routes</h2>
+    <h2> SubTodo Routes</h2>
     <ul>
-        <li>POST /api/v1/subTodos/createSubTodo - Create a new sub-todo (🔒 requires JWT)</li>
-        <li>POST /api/v1/subTodos/toggleSubTodoComplete - Toggle completion status of a sub-todo (🔒 requires JWT)</li>
-        <li>POST /api/v1/subTodos/getSubTodo - Get all sub-todos for a todo (🔒 requires JWT)</li>
-        <li>POST /api/v1/subTodos/deleteSubTodo - Delete a sub-todo (🔒 requires JWT)</li>
-        <li>POST /api/v1/subTodos/updateSubTodoContent - Update sub-todo content (🔒 requires JWT)</li>
+        <li>POST /api/v1/subTodos/createSubTodo - Create a new sub-todo ( requires JWT)</li>
+        <li>POST /api/v1/subTodos/toggleSubTodoComplete - Toggle completion status of a sub-todo ( requires JWT)</li>
+        <li>POST /api/v1/subTodos/getSubTodo - Get all sub-todos for a todo ( requires JWT)</li>
+        <li>POST /api/v1/subTodos/deleteSubTodo - Delete a sub-todo ( requires JWT)</li>
+        <li>POST /api/v1/subTodos/updateSubTodoContent - Update sub-todo content ( requires JWT)</li>
     </ul>
 
     <p> Test these endpoints using Postman, Thunder Client, or curl.</p>
